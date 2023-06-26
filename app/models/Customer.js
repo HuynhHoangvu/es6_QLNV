@@ -1,4 +1,4 @@
-import Person from "./Person";
+import Person from "./Person.js";
 
 export default class Customer extends Person{
     constructor(id,name,address,email,cty,trigia,danhgia,chucvu){

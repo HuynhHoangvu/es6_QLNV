@@ -1,164 +1,159 @@
-import Customer from "../model/Customer.js";
-import Employee from "../model/Employee.js";
-import ListPerson from "../model/ListPerson.js";
-import Person from "../model/Person.js";
-import Student from "../model/Student.js";
+import Customer from "../models/Customer.js";
+import Employee from "../models/Employee.js";
+import ListPerson from "../models/ListPerson.js";
+import Person from "../models/Person.js";
+import Student from "../models/Student.js";
 
 const listPerson = new ListPerson();
 const person = new Person();
-const getEle = (id) => document.getElementById(id);
+const getE = (id) => document.getElementById(id);
 
-let nextId = 1;
-function getPerson() {
-    console.log(statedef)
-    let hoten = getEle('hoten').value;
-    let diachi = getEle('diachi').value;
-    let email = getEle('email').value;
-
-    let id = nextId++;
-    if (statedef == 'Customer') {
-        let tenct = getEle('tenct').value
-        let trigia = getEle('trigia').value * 1
-        let danhgia = getEle('danhgia').value
-        let chucvu = statedef
-        const customer = new Customer(id, hoten, diachi, email, tenct, trigia, danhgia, chucvu);
+let Id = 1;
+function getPerson(){
+    let name = getE("name").value;
+    let address = getE("address").value;
+    let email = getE("email").value;
+    let id = Id++;
+    if(vla == 'Customer'){
+        let cty = getE('cty').value;
+        let trigia = getE('hoaDon').value *1;
+        let danhgia = getE('rate').value;
+        let chucvu = vla;
+        const customer = new Customer(id,name,address,email,cty,trigia,danhgia,chucvu);
         console.log(customer);
         return customer;
-
     }
-    if (statedef == 'Student') {
-        let chucvu = statedef
-        let toan = getEle('toan').value * 1
-        let ly = getEle('ly').value * 1
-        let hoa = getEle('hoa').value * 1
-        const student = new Student(id, hoten, diachi, email, toan, ly, hoa, chucvu)
+    if(vla == 'Student'){
+        let chucvu = vla;
+        let toan = getE('toan').value *1;
+        let ly = getE('ly').value *1;
+        let hoa = getE('hoa').value*1;
+        const student = new Student(id,name,address,email,toan,ly,hoa,chucvu);
         console.log(student);
         student.tinhDTB();
         return student;
-
     }
-    if (statedef == 'Employee') {
-        let chucvu = statedef
-        let ngaylamviec = getEle('ngaylamviec').value * 1
-        let luongtheongay = getEle('luongtheongay').value * 1
-        const employee = new Employee(id, hoten, diachi, email, chucvu, ngaylamviec, luongtheongay)
-        console.log(employee)
+    if(vla == 'Employee'){
+        let chucvu = vla;
+        let ngaylam= getE('ngayLam').value *1;
+        let luongtheongay = getE('luongngay').value *1;
+        const employee = new Employee(id,name,address,email,chucvu,ngaylam,luongtheongay);
+        console.log(employee);
         employee.tinhLuong();
         return employee;
     }
 }
-window.filterByLoai = () => {
-    const filterLoai = getEle("filterLoai").value;
-    renderPerson(listPerson.arr, filterLoai);
+window.filterByLoai = () =>{
+    const filterLoai = getE("filterLoai").value;
+    renderPerson(listPerson.arr,filterLoai);
 }
-
 window.btnSort = () => {
     let mangTheoChuCai = listPerson.sortAZ()
     renderPerson(mangTheoChuCai)
 }
-
-function renderPerson(data, filterLoai) {
-    let content = ""; // Accumulate the content outside the loop
-    for (let i = 0; i < data.length; i++) {
+function renderPerson(data,filterLoai){
+    let content = "";
+    for(let i = 0; i <data.length;i++){
         let eachperson = data[i];
         let luong = eachperson.luong !== undefined ? eachperson.luong : "";
-
-        if (filterLoai && eachperson.chucvu !== filterLoai) {
+        if(filterLoai && eachperson.chucvu !== filterLoai){
             continue;
         }
-
-        let dtb = eachperson.dtb || "";
-        content += `
-      <tr>
-        <td>${eachperson.hoten}</td>
-        <td>${eachperson.diachi}</td>
-        <td>${eachperson.email}</td>
-        <td>${eachperson.chucvu}</td>
-        <td>${luong}</td>
-        <td>${dtb}</td>
-        <td>
+        let dtb = eachperson.dtb|| "";
+        let cty = eachperson.cty !== undefined ? eachperson.cty : "";
+        let hoaDon = eachperson.hoaDon !== undefined ? eachperson.hoaDon : "";
+        let rate = eachperson.rate !== undefined ? eachperson.rate : "";
+        content +=
+       ` <tr>
+            <td>${eachperson.name}</td>
+            <td>${eachperson.address}</td>
+            <td>${eachperson.email}</td>
+            <td>${eachperson.chucvu}</td>
+            <td>${dtb}</td>
+            <td>${luong}</td>
+            <td>${cty}</td>
+            <td>${hoaDon}</td>
+            <td>${rate}</td>
+            <td>
         <button class="btn btn-info" onclick="btnShowEditPanel('${eachperson.id}')">Edit</button>
         <button class="btn btn-danger" onclick="btnDelete('${eachperson.id}')">Delete</button></td>
-      </tr>
-    `;
+        </tr>`
     }
-    getEle('tblManager').innerHTML = content; // Set the content after the loop
+    getE('tbodyFood').innerHTML = content;
 }
-
-
-let statedef = "";
-window.showMoreOption = (value) => {
-
-    if (value.length != 0) {
-
-        if (value == "Customer") {
-            statedef = "Customer";
-            getEle("hiddenCustomer").style.display = "block";
-            getEle("hiddenStudent").style.display = "none";
-            getEle("hiddenEmployee").style.display = "none";
-        } else if (value == "Student") {
-            statedef = "Student";
-            getEle("hiddenCustomer").style.display = "none";
-            getEle("hiddenStudent").style.display = "block";
-            getEle("hiddenEmployee").style.display = "none";
-        } else if (value == "Employee") {
-            statedef = "Employee";
-            getEle("hiddenCustomer").style.display = "none";
-            getEle("hiddenStudent").style.display = "none";
-            getEle("hiddenEmployee").style.display = "block";
+let vla = "";
+window.showMoreOption = (value) =>{
+    if(value.length != 0){
+        if(value == "Customer"){
+            vla = "Customer";
+            getE("hiddenCustomer").style.display = "block";
+            getE("hiddenStudent").style.display = "none";
+            getE("hiddenEmployee").style.display = "none";
         }
-    } else {
-        getEle("hiddenEmployee").style.display = "none";
-        getEle("hiddenCustomer").style.display = "none";
-        getEle("hiddenStudent").style.display = "none";
-        statedef = "";
+        else if( value == "Student"){
+            vla = "Student";
+            getE("hiddenCustomer").style.display = "none";
+            getE("hiddenStudent").style.display = "block";
+            getE("hiddenEmployee").style.display = "none";
+        }
+        else if(value == "Employee"){
+            vla = "Employee";
+            getE("hiddenCustomer").style.display = "none";
+            getE("hiddenStudent").style.display = "none";
+            getE("hiddenEmployee").style.display = "block";
+        }
+         }else{
+            getE("hiddenCustomer").style.display = "none";
+            getE("hiddenStudent").style.display = "none";
+            getE("hiddenEmployee").style.display = "none"; 
+            vla="";
+       
     }
 };
-
 // Button: Show Edit Form
 window.btnShowEditPanel = (id) => {
     $("#modelId").modal("show");
-    getEle('editBtn').style.display = 'block';
-    getEle("editBtn").setAttribute("value", id);
-    getEle('addBtn').style.display = 'none';
+    getE('editBtn').style.display = 'block';
+    getE("editBtn").setAttribute("value", id);
+    getE('addBtn').style.display = 'none';
 
     let personEdit = listPerson.findPersonId(id);
 
-    getEle("hoten").value = personEdit.hoten;
-    getEle("diachi").value = personEdit.diachi;
-    getEle("email").value = personEdit.email;
+    getE("hoten").value = personEdit.hoten;
+    getE("diachi").value = personEdit.diachi;
+    getE("email").value = personEdit.email;
 
     if (personEdit.chucvu === "Customer") {
-        getEle("hiddenCustomer").style.display = "block";
-        getEle("hiddenEmployee").style.display = "none";
-        getEle("hiddenStudent").style.display = "none";
-        getEle("tenct").value = personEdit.tenct;
-        getEle("trigia").value = personEdit.trigia;
-        getEle("danhgia").value = personEdit.danhgia;
-        getEle('loai').value = personEdit.chucvu
+        getE("hiddenCustomer").style.display = "block";
+        getE("hiddenEmployee").style.display = "none";
+        getE("hiddenStudent").style.display = "none";
+        getE("tenct").value = personEdit.tenct;
+        getE("trigia").value = personEdit.trigia;
+        getE("danhgia").value = personEdit.danhgia;
+        getE('loai').value = personEdit.chucvu
         statedef = "Customer"
 
     } if (personEdit.chucvu === "Student") {
-        getEle("hiddenStudent").style.display = "block";
-        getEle("hiddenCustomer").style.display = "none";
-        getEle("hiddenEmployee").style.display = "none";
-        getEle("toan").value = personEdit.toan;
-        getEle("ly").value = personEdit.ly;
-        getEle('loai').value = personEdit.chucvu
-        getEle("hoa").value = personEdit.hoa;
+        getE("hiddenStudent").style.display = "block";
+        getE("hiddenCustomer").style.display = "none";
+        getE("hiddenEmployee").style.display = "none";
+        getE("toan").value = personEdit.toan;
+        getE("ly").value = personEdit.ly;
+        getE('loai').value = personEdit.chucvu
+        getE("hoa").value = personEdit.hoa;
         statedef = "Student"
 
     } if (personEdit.chucvu === "Employee") {
-        getEle("hiddenEmployee").style.display = "block";
-        getEle("hiddenCustomer").style.display = "none";
-        getEle("hiddenStudent").style.display = "none";
-        getEle("luongtheongay").value = personEdit.luongtheongay;
-        getEle('loai').value = personEdit.chucvu
-        getEle("ngaylamviec").value = personEdit.songaylamviec;
+        getE("hiddenEmployee").style.display = "block";
+        getE("hiddenCustomer").style.display = "none";
+        getE("hiddenStudent").style.display = "none";
+        getE("luongngay").value = personEdit.luongtheongay;
+        getE('loai').value = personEdit.chucvu
+        getE("ngaylamviec").value = personEdit.songaylamviec;
         statedef = "Employee"
 
     }
-    getEle("loai").disabled = true;
+    getE("loai").disabled=true;  
 
 };
 
@@ -166,34 +161,34 @@ window.btnShowEditPanel = (id) => {
 window.editBtn = (value) => {
     const id = value;
     const personEdit = listPerson.findPersonId(id);
-    personEdit.hoten = getEle("hoten").value;
-    personEdit.diachi = getEle("diachi").value;
-    personEdit.email = getEle("email").value;
+    personEdit.hoten = getE("name").value;
+    personEdit.diachi = getE("address").value;
+    personEdit.email = getE("email").value;
 
     if (personEdit.chucvu === "Customer") {
-        personEdit.tenct = getEle("tenct").value;
-        personEdit.trigia = getEle("trigia").value;
-        personEdit.danhgia = getEle("danhgia").value;
-        personEdit.chucvu = getEle("loai").value;
-        getEle("editBtn").style.display = "none";
+        personEdit.tenct = getE("cty").value;
+        personEdit.trigia = getE("trigia").value;
+        personEdit.danhgia = getE("rate").value;
+        personEdit.chucvu = getE("loai").value;
+        getE("editBtn").style.display = "none";
 
     } else if (personEdit.chucvu === "Student") {
-        personEdit.toan = getEle("toan").value * 1;
-        personEdit.ly = getEle("ly").value * 1;
-        personEdit.hoa = getEle("hoa").value * 1;
-        personEdit.chucvu = getEle("loai").value;
+        personEdit.toan = getE("toan").value * 1;
+        personEdit.ly = getE("ly").value * 1;
+        personEdit.hoa = getE("hoa").value * 1;
+        personEdit.chucvu = getE("loai").value;
         personEdit.dtb = (personEdit.toan + personEdit.ly + personEdit.hoa) / 3
         personEdit.luong = ""
-        getEle("editBtn").style.display = "none";
+        getE("editBtn").style.display = "none";
 
 
     } else if (personEdit.chucvu === "Employee") {
-        personEdit.luongtheongay = getEle("luongtheongay").value;
-        personEdit.songaylamviec = getEle("ngaylamviec").value;
-        personEdit.chucvu = getEle("loai").value;
+        personEdit.luongtheongay = getE("luongngay").value;
+        personEdit.songaylamviec = getE("ngaylamviec").value;
+        personEdit.chucvu = getE("loai").value;
         personEdit.luong = personEdit.luongtheongay * personEdit.songaylamviec
         personEdit.dtb = ""
-        getEle("editBtn").style.display = "none";
+        getE("editBtn").style.display = "none";
 
     }
 
@@ -201,14 +196,12 @@ window.editBtn = (value) => {
     renderPerson(listPerson.arr);
     reset();
 }
-
 // Button: Delete
 window.btnDelete = (id) => {
     listPerson.deletePerson(id)
     setLocalStorage();
     renderPerson(listPerson.arr);
 }
-
 // Button: Add
 window.addBtn = () => {
     let person = getPerson()
@@ -219,38 +212,39 @@ window.addBtn = () => {
     } else {
         alert("Hãy điền thông tin đầy đủ")
     }
-    reset()
+    reset();
+   
 };
 
 window.btnShowAdd = () => {
     reset();
-    getEle('editBtn').style.display = 'none';
-    getEle('addBtn').style.display = 'block';
-    getEle("loai").disabled = false;
+    getE('editBtn').style.display = 'none';
+    getE('addBtn').style.display = 'block';
+    getE("loai").disabled = false;
 
 }
 
 function reset() {
-    getEle('hoten').value = "";
-    getEle('diachi').value = "";
-    getEle('email').value = "";
+    getE('hoten').value = "";
+    getE('diachi').value = "";
+    getE('email').value = "";
 
-    getEle('toan').value = "";
-    getEle('ly').value = "";
-    getEle('hoa').value = "";
+    getE('toan').value = "";
+    getE('ly').value = "";
+    getE('hoa').value = "";
 
-    getEle('tenct').value = "";
-    getEle('trigia').value = "";
-    getEle('danhgia').value = "";
+    getE('tenct').value = "";
+    getE('trigia').value = "";
+    getE('danhgia').value = "";
 
-    getEle('luongtheongay').value = "";
-    getEle('ngaylamviec').value = "";
+    getE('luongtheongay').value = "";
+    getE('ngaylamviec').value = "";
 
-    getEle('loai').value = ""
+    getE('loai').value = ""
 
-    getEle('hiddenEmployee').style.display = 'none';
-    getEle('hiddenCustomer').style.display = 'none';
-    getEle('hiddenStudent').style.display = 'none';
+    getE('hiddenEmployee').style.display = 'none';
+    getE('hiddenCustomer').style.display = 'none';
+    getE('hiddenStudent').style.display = 'none';
     statedef = ""
 
 }

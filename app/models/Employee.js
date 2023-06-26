@@ -1,7 +1,7 @@
-import Person from "./Person";
+import Person from "./Person.js";
 export default class Employee extends Person{
-    constructor(id,name,address,chucvu,ngaylam,luongtheongay,luong){
-        super(id,name,address,this.email);
+    constructor(id,name,address,email,chucvu,ngaylam,luongtheongay,luong){
+        super(id,name,address,email);
         this.chucvu = chucvu;
         this.ngaylam = ngaylam;
         this.luongtheongay = luongtheongay;
@@ -9,5 +9,6 @@ export default class Employee extends Person{
     }
     tinhLuong(){
         this.luong = this.ngaylam * this.luongtheongay
+        console.log(this.luong);
     }
 }
